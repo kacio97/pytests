@@ -121,17 +121,17 @@ import pytest
 
 @pytest.fixture
 def mock_data(request):
-    filename = request.param[0]
+    filename = "file.txt"
     if ".txt" in str(filename):
         with open(filename, "w") as f:
-            f.write(request.param[1][0])
+            f.write(request.param[0])
 
-    yield [filename, request.param[1][1]]
+    yield [filename, request.param[1]]
     f.close()
 
 
 @pytest.mark.parametrize("mock_data",
-                         [("file.txt", ["1+2+3", 6.0]), ("file.txt", ["5*5+1", 26.0]), ("file.txt", ["2*4+5", 13.0])],
+                         [("1+2+3", 6.0), ("5*5+1", 26.0), ("2*4+5", 13.0)],
                          indirect=True)
 def test_calc_module(mock_data):
     results = calc_module.calculate_from_file(mock_data[0])
